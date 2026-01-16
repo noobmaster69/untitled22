@@ -131,7 +131,7 @@ export default function ConstructionAnalytics() {
             background: 'linear-gradient(135deg, #0a1f0a 0%, #1a3d1a 50%, #0a1f0a 100%)',
             fontFamily: "'DM Sans', sans-serif",
             color: '#d4f4d4',
-            padding: '40px',
+            padding: '20px',
             position: 'relative',
             overflow: 'hidden'
         }}>
@@ -172,6 +172,15 @@ export default function ConstructionAnalytics() {
           transform: translateY(-4px);
           box-shadow: 0 12px 40px rgba(0,0,0,0.4);
         }
+
+        @media (max-width: 768px) {
+          .company-row:hover {
+            transform: translateX(0);
+          }
+          .region-card:hover {
+            transform: translateY(0);
+          }
+        }
       `}</style>
 
             {/* Decorative elements */}
@@ -181,7 +190,7 @@ export default function ConstructionAnalytics() {
                 right: '-200px',
                 width: '600px',
                 height: '600px',
-                //background: 'radial-gradient(circle, rgba(61, 122, 61, 0.15) 0%, transparent 70%)',
+                background: 'radial-gradient(circle, rgba(61, 122, 61, 0.15) 0%, transparent 70%)',
                 borderRadius: '50%',
                 pointerEvents: 'none'
             }} />
@@ -197,26 +206,25 @@ export default function ConstructionAnalytics() {
             }} />
 
             {/* Header */}
-            <header style={{ marginBottom: '48px', position: 'relative', zIndex: 1 }}>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '16px', marginBottom: '16px',  }}>
+            <header style={{ marginBottom: '32px', position: 'relative', zIndex: 1 }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', gap: '12px', marginBottom: '8px' }}>
                     <h1 style={{
                         fontFamily: "'Playfair Display', serif",
-                        fontSize: '46px',
+                        fontSize: 'clamp(28px, 6vw, 56px)',
                         fontWeight: 700,
                         margin: 0,
                         background: 'linear-gradient(135deg, #b3e8b3 0%, #4a8c4a 100%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
-                        letterSpacing: '-2px'
+                        letterSpacing: '-1px'
                     }}>
-                        Selective Hauling
+                        2025 Revenue Analytics
                     </h1>
-
                     <span style={{
                         fontFamily: "'DM Mono', monospace",
-                        fontSize: '14px',
+                        fontSize: '12px',
                         color: '#6bc46b',
-                        padding: '6px 12px',
+                        padding: '4px 10px',
                         background: 'rgba(61, 122, 61, 0.3)',
                         borderRadius: '20px',
                         border: '1px solid rgba(91, 168, 91, 0.3)'
@@ -224,21 +232,9 @@ export default function ConstructionAnalytics() {
             DMV REGION
           </span>
                 </div>
-                <h1 style={{
-                    fontFamily: "'Playfair Display', serif",
-                    fontSize: '46px',
-                    fontWeight: 700,
-                    margin: 0,
-                    background: 'linear-gradient(135deg, #b3e8b3 0%, #4a8c4a 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    letterSpacing: '-2px'
-                }}>
-                    Revenue Analytics 2025
-                </h1>
                 <p style={{
                     fontFamily: "'DM Sans', sans-serif",
-                    fontSize: '18px',
+                    fontSize: 'clamp(14px, 3vw, 18px)',
                     color: '#6bc46b',
                     margin: 0,
                     fontWeight: 400
@@ -250,9 +246,9 @@ export default function ConstructionAnalytics() {
             {/* Key Stats */}
             <div style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(4, 1fr)',
-                gap: '24px',
-                marginBottom: '48px',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+                gap: '16px',
+                marginBottom: '32px',
                 position: 'relative',
                 zIndex: 1
             }}>
@@ -264,37 +260,37 @@ export default function ConstructionAnalytics() {
                 ].map((stat, i) => (
                     <div key={i} className="stat-card glow" style={{
                         background: 'linear-gradient(145deg, rgba(26, 61, 26, 0.8) 0%, rgba(10, 31, 10, 0.9) 100%)',
-                        borderRadius: '20px',
-                        padding: '28px',
+                        borderRadius: '16px',
+                        padding: '20px',
                         border: '1px solid rgba(61, 122, 61, 0.4)',
                         position: 'relative',
                         overflow: 'hidden'
                     }}>
                         <div style={{
                             position: 'absolute',
-                            top: '20px',
-                            right: '20px',
-                            fontSize: '24px',
+                            top: '16px',
+                            right: '16px',
+                            fontSize: '20px',
                             color: 'rgba(91, 168, 91, 0.3)'
                         }}>{stat.icon}</div>
                         <p style={{
                             fontFamily: "'DM Mono', monospace",
-                            fontSize: '11px',
+                            fontSize: '10px',
                             color: '#6bc46b',
                             textTransform: 'uppercase',
-                            letterSpacing: '2px',
-                            margin: '0 0 12px 0'
+                            letterSpacing: '1.5px',
+                            margin: '0 0 8px 0'
                         }}>{stat.label}</p>
                         <p style={{
                             fontFamily: "'Playfair Display', serif",
-                            fontSize: '36px',
+                            fontSize: 'clamp(24px, 5vw, 36px)',
                             fontWeight: 700,
                             margin: '0 0 4px 0',
                             color: '#d4f4d4'
                         }}>{stat.value}</p>
                         <p style={{
                             fontFamily: "'DM Sans', sans-serif",
-                            fontSize: '13px',
+                            fontSize: '12px',
                             color: '#4a8c4a',
                             margin: 0
                         }}>{stat.sub}</p>
@@ -305,28 +301,28 @@ export default function ConstructionAnalytics() {
             {/* Regional Breakdown Section */}
             <div style={{
                 display: 'grid',
-                gridTemplateColumns: '1fr 2fr',
-                gap: '24px',
-                marginBottom: '48px',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                gap: '20px',
+                marginBottom: '32px',
                 position: 'relative',
                 zIndex: 1
             }}>
                 {/* Pie Chart */}
                 <div className="chart-container glow" style={{
                     background: 'linear-gradient(145deg, rgba(26, 61, 26, 0.8) 0%, rgba(10, 31, 10, 0.9) 100%)',
-                    borderRadius: '20px',
-                    padding: '32px',
+                    borderRadius: '16px',
+                    padding: '20px',
                     border: '1px solid rgba(61, 122, 61, 0.4)'
                 }}>
                     <h3 style={{
                         fontFamily: "'DM Sans', sans-serif",
-                        fontSize: '18px',
+                        fontSize: '16px',
                         fontWeight: 600,
-                        margin: '0 0 24px 0',
+                        margin: '0 0 20px 0',
                         color: '#d4f4d4',
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '12px'
+                        gap: '10px'
                     }}>
             <span style={{
                 width: '8px',
@@ -337,14 +333,14 @@ export default function ConstructionAnalytics() {
             }}></span>
                         Revenue by Region
                     </h3>
-                    <ResponsiveContainer width="100%" height={240}>
+                    <ResponsiveContainer width="100%" height={200}>
                         <PieChart>
                             <Pie
                                 data={regionalData}
                                 cx="50%"
                                 cy="50%"
-                                innerRadius={60}
-                                outerRadius={100}
+                                innerRadius={50}
+                                outerRadius={80}
                                 paddingAngle={3}
                                 dataKey="value"
                                 onMouseEnter={(_, index) => setActiveRegion(index)}
@@ -363,11 +359,11 @@ export default function ConstructionAnalytics() {
                             <Tooltip content={<RegionalTooltip />} />
                         </PieChart>
                     </ResponsiveContainer>
-                    <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '16px', flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', marginTop: '12px', flexWrap: 'wrap' }}>
                         {regionalData.map((region, i) => (
-                            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <div style={{ width: '12px', height: '12px', borderRadius: '3px', background: region.color }}></div>
-                                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '12px', color: '#6bc46b' }}>
+                            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                <div style={{ width: '10px', height: '10px', borderRadius: '3px', background: region.color }}></div>
+                                <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '11px', color: '#6bc46b' }}>
                   {region.abbr}
                 </span>
                             </div>
@@ -375,8 +371,8 @@ export default function ConstructionAnalytics() {
                     </div>
                 </div>
 
-                {/* Regional Cards */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
+                {/* Regional Cards Container */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '12px' }}>
                     {[
                         { name: 'Virginia', abbr: 'VA', amount: 4039874.23, pct: 43.9, color: '#2d5a2d', top: topByRegion.VA },
                         { name: 'Maryland', abbr: 'MD', amount: 2802547.89, pct: 30.5, color: '#4a8c4a', top: topByRegion.MD },
@@ -384,17 +380,16 @@ export default function ConstructionAnalytics() {
                     ].map((region, i) => (
                         <div key={i} className="chart-container region-card" style={{
                             background: 'linear-gradient(145deg, rgba(26, 61, 26, 0.8) 0%, rgba(10, 31, 10, 0.9) 100%)',
-                            borderRadius: '16px',
-                            padding: '24px',
+                            borderRadius: '12px',
+                            padding: '16px',
                             border: '1px solid rgba(61, 122, 61, 0.4)',
-                            transition: 'all 0.3s ease',
-                            cursor: 'pointer'
+                            transition: 'all 0.3s ease'
                         }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
                                 <div>
                                     <p style={{
                                         fontFamily: "'DM Mono', monospace",
-                                        fontSize: '11px',
+                                        fontSize: '10px',
                                         color: '#6bc46b',
                                         textTransform: 'uppercase',
                                         letterSpacing: '1px',
@@ -402,22 +397,22 @@ export default function ConstructionAnalytics() {
                                     }}>{region.name}</p>
                                     <p style={{
                                         fontFamily: "'Playfair Display', serif",
-                                        fontSize: '28px',
+                                        fontSize: 'clamp(20px, 4vw, 28px)',
                                         fontWeight: 700,
                                         margin: 0,
                                         color: '#d4f4d4'
                                     }}>{formatCurrencyShort(region.amount)}</p>
                                 </div>
                                 <div style={{
-                                    width: '48px',
-                                    height: '48px',
-                                    borderRadius: '12px',
+                                    width: '40px',
+                                    height: '40px',
+                                    borderRadius: '10px',
                                     background: `linear-gradient(135deg, ${region.color}40 0%, ${region.color}20 100%)`,
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     fontFamily: "'DM Mono', monospace",
-                                    fontSize: '14px',
+                                    fontSize: '12px',
                                     fontWeight: 600,
                                     color: region.color,
                                     border: `1px solid ${region.color}40`
@@ -428,10 +423,10 @@ export default function ConstructionAnalytics() {
 
                             {/* Progress bar */}
                             <div style={{
-                                height: '6px',
+                                height: '5px',
                                 background: 'rgba(61, 122, 61, 0.2)',
                                 borderRadius: '3px',
-                                marginBottom: '16px',
+                                marginBottom: '12px',
                                 overflow: 'hidden'
                             }}>
                                 <div style={{
@@ -443,41 +438,41 @@ export default function ConstructionAnalytics() {
                             </div>
                             <p style={{
                                 fontFamily: "'DM Mono', monospace",
-                                fontSize: '12px',
+                                fontSize: '11px',
                                 color: '#4a8c4a',
-                                margin: '0 0 16px 0'
-                            }}>{region.pct}% of total revenue</p>
+                                margin: '0 0 12px 0'
+                            }}>{region.pct}% of total</p>
 
                             {/* Top 3 in region */}
-                            <div style={{ borderTop: '1px solid rgba(61, 122, 61, 0.3)', paddingTop: '12px' }}>
+                            <div style={{ borderTop: '1px solid rgba(61, 122, 61, 0.3)', paddingTop: '10px' }}>
                                 <p style={{
                                     fontFamily: "'DM Mono', monospace",
-                                    fontSize: '10px',
+                                    fontSize: '9px',
                                     color: '#4a8c4a',
                                     textTransform: 'uppercase',
                                     letterSpacing: '1px',
-                                    margin: '0 0 8px 0'
+                                    margin: '0 0 6px 0'
                                 }}>Top Performers</p>
                                 {region.top.map((company, j) => (
                                     <div key={j} style={{
                                         display: 'flex',
                                         justifyContent: 'space-between',
                                         alignItems: 'center',
-                                        padding: '4px 0',
+                                        padding: '3px 0',
                                         borderBottom: j < 2 ? '1px solid rgba(61, 122, 61, 0.15)' : 'none'
                                     }}>
                     <span style={{
                         fontFamily: "'DM Sans', sans-serif",
-                        fontSize: '11px',
+                        fontSize: '10px',
                         color: '#d4f4d4',
                         whiteSpace: 'nowrap',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
-                        maxWidth: '120px'
+                        maxWidth: '80px'
                     }}>{company.name}</span>
                                         <span style={{
                                             fontFamily: "'DM Mono', monospace",
-                                            fontSize: '11px',
+                                            fontSize: '10px',
                                             color: region.color
                                         }}>{formatCurrencyShort(company.amount)}</span>
                                     </div>
@@ -491,28 +486,28 @@ export default function ConstructionAnalytics() {
             {/* Charts Grid */}
             <div style={{
                 display: 'grid',
-                gridTemplateColumns: '2fr 1fr',
-                gap: '24px',
-                marginBottom: '48px',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                gap: '20px',
+                marginBottom: '32px',
                 position: 'relative',
                 zIndex: 1
             }}>
                 {/* Monthly Trend */}
                 <div className="chart-container glow" style={{
                     background: 'linear-gradient(145deg, rgba(26, 61, 26, 0.8) 0%, rgba(10, 31, 10, 0.9) 100%)',
-                    borderRadius: '20px',
-                    padding: '32px',
+                    borderRadius: '16px',
+                    padding: '20px',
                     border: '1px solid rgba(61, 122, 61, 0.4)'
                 }}>
                     <h3 style={{
                         fontFamily: "'DM Sans', sans-serif",
-                        fontSize: '18px',
+                        fontSize: '16px',
                         fontWeight: 600,
-                        margin: '0 0 24px 0',
+                        margin: '0 0 20px 0',
                         color: '#d4f4d4',
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '12px'
+                        gap: '10px'
                     }}>
             <span style={{
                 width: '8px',
@@ -523,7 +518,7 @@ export default function ConstructionAnalytics() {
             }}></span>
                         Monthly Revenue Trend
                     </h3>
-                    <ResponsiveContainer width="100%" height={280}>
+                    <ResponsiveContainer width="100%" height={220}>
                         <AreaChart data={monthlyTotals}>
                             <defs>
                                 <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
@@ -535,20 +530,21 @@ export default function ConstructionAnalytics() {
                                 dataKey="month"
                                 axisLine={false}
                                 tickLine={false}
-                                tick={{ fill: '#6bc46b', fontSize: 12, fontFamily: 'DM Mono' }}
+                                tick={{ fill: '#6bc46b', fontSize: 10, fontFamily: 'DM Mono' }}
                             />
                             <YAxis
                                 axisLine={false}
                                 tickLine={false}
-                                tick={{ fill: '#6bc46b', fontSize: 12, fontFamily: 'DM Mono' }}
+                                tick={{ fill: '#6bc46b', fontSize: 10, fontFamily: 'DM Mono' }}
                                 tickFormatter={formatCurrencyShort}
+                                width={50}
                             />
                             <Tooltip content={<CustomTooltip />} />
                             <Area
                                 type="monotone"
                                 dataKey="amount"
                                 stroke="#5ba85b"
-                                strokeWidth={3}
+                                strokeWidth={2}
                                 fill="url(#colorRevenue)"
                             />
                         </AreaChart>
@@ -558,19 +554,19 @@ export default function ConstructionAnalytics() {
                 {/* Quarterly Breakdown */}
                 <div className="chart-container glow" style={{
                     background: 'linear-gradient(145deg, rgba(26, 61, 26, 0.8) 0%, rgba(10, 31, 10, 0.9) 100%)',
-                    borderRadius: '20px',
-                    padding: '32px',
+                    borderRadius: '16px',
+                    padding: '20px',
                     border: '1px solid rgba(61, 122, 61, 0.4)'
                 }}>
                     <h3 style={{
                         fontFamily: "'DM Sans', sans-serif",
-                        fontSize: '18px',
+                        fontSize: '16px',
                         fontWeight: 600,
-                        margin: '0 0 24px 0',
+                        margin: '0 0 20px 0',
                         color: '#d4f4d4',
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '12px'
+                        gap: '10px'
                     }}>
             <span style={{
                 width: '8px',
@@ -581,22 +577,23 @@ export default function ConstructionAnalytics() {
             }}></span>
                         Quarterly Performance
                     </h3>
-                    <ResponsiveContainer width="100%" height={280}>
-                        <BarChart data={quarterlyData} barSize={48}>
+                    <ResponsiveContainer width="100%" height={220}>
+                        <BarChart data={quarterlyData} barSize={40}>
                             <XAxis
                                 dataKey="quarter"
                                 axisLine={false}
                                 tickLine={false}
-                                tick={{ fill: '#6bc46b', fontSize: 12, fontFamily: 'DM Mono' }}
+                                tick={{ fill: '#6bc46b', fontSize: 10, fontFamily: 'DM Mono' }}
                             />
                             <YAxis
                                 axisLine={false}
                                 tickLine={false}
-                                tick={{ fill: '#6bc46b', fontSize: 12, fontFamily: 'DM Mono' }}
+                                tick={{ fill: '#6bc46b', fontSize: 10, fontFamily: 'DM Mono' }}
                                 tickFormatter={formatCurrencyShort}
+                                width={50}
                             />
                             <Tooltip content={<CustomTooltip />} />
-                            <Bar dataKey="amount" radius={[8, 8, 0, 0]}>
+                            <Bar dataKey="amount" radius={[6, 6, 0, 0]}>
                                 {quarterlyData.map((entry, index) => (
                                     <Cell key={`cell-${index}`} fill={COLORS[index + 2]} />
                                 ))}
@@ -609,22 +606,22 @@ export default function ConstructionAnalytics() {
             {/* Top Clients */}
             <div className="chart-container glow" style={{
                 background: 'linear-gradient(145deg, rgba(26, 61, 26, 0.8) 0%, rgba(10, 31, 10, 0.9) 100%)',
-                borderRadius: '20px',
-                padding: '32px',
+                borderRadius: '16px',
+                padding: '20px',
                 border: '1px solid rgba(61, 122, 61, 0.4)',
                 position: 'relative',
                 zIndex: 1
             }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
                     <h3 style={{
                         fontFamily: "'DM Sans', sans-serif",
-                        fontSize: '18px',
+                        fontSize: '16px',
                         fontWeight: 600,
                         margin: 0,
                         color: '#d4f4d4',
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '12px'
+                        gap: '10px'
                     }}>
             <span style={{
                 width: '8px',
@@ -633,25 +630,25 @@ export default function ConstructionAnalytics() {
                 borderRadius: '50%',
                 display: 'inline-block'
             }}></span>
-                        Top 10 Clients — Regional Breakdown
+                        Top 10 Clients
                     </h3>
-                    <div style={{ display: 'flex', gap: '16px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                            <div style={{ width: '10px', height: '10px', borderRadius: '2px', background: '#7bc47b' }}></div>
-                            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '11px', color: '#6bc46b' }}>DC</span>
+                    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <div style={{ width: '8px', height: '8px', borderRadius: '2px', background: '#7bc47b' }}></div>
+                            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', color: '#6bc46b' }}>DC</span>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                            <div style={{ width: '10px', height: '10px', borderRadius: '2px', background: '#4a8c4a' }}></div>
-                            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '11px', color: '#6bc46b' }}>MD</span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <div style={{ width: '8px', height: '8px', borderRadius: '2px', background: '#4a8c4a' }}></div>
+                            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', color: '#6bc46b' }}>MD</span>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                            <div style={{ width: '10px', height: '10px', borderRadius: '2px', background: '#2d5a2d' }}></div>
-                            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '11px', color: '#6bc46b' }}>VA</span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <div style={{ width: '8px', height: '8px', borderRadius: '2px', background: '#2d5a2d' }}></div>
+                            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', color: '#6bc46b' }}>VA</span>
                         </div>
                     </div>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '12px' }}>
                     {rawData.map((company, i) => (
                         <div
                             key={i}
@@ -659,10 +656,10 @@ export default function ConstructionAnalytics() {
                             style={{
                                 display: 'flex',
                                 alignItems: 'center',
-                                gap: '16px',
-                                padding: '16px 20px',
+                                gap: '12px',
+                                padding: '12px 16px',
                                 background: hoveredCompany === i ? 'rgba(61, 122, 61, 0.2)' : 'rgba(10, 31, 10, 0.5)',
-                                borderRadius: '12px',
+                                borderRadius: '10px',
                                 border: '1px solid rgba(61, 122, 61, 0.2)',
                                 cursor: 'pointer',
                                 transition: 'all 0.3s ease'
@@ -671,15 +668,15 @@ export default function ConstructionAnalytics() {
                             onMouseLeave={() => setHoveredCompany(null)}
                         >
                             <div style={{
-                                width: '36px',
-                                height: '36px',
-                                borderRadius: '10px',
+                                width: '32px',
+                                height: '32px',
+                                borderRadius: '8px',
                                 background: `linear-gradient(135deg, ${COLORS[i + 2]} 0%, ${COLORS[i + 3]} 100%)`,
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 fontFamily: "'DM Mono', monospace",
-                                fontSize: '14px',
+                                fontSize: '12px',
                                 fontWeight: 600,
                                 color: '#d4f4d4',
                                 flexShrink: 0
@@ -689,9 +686,9 @@ export default function ConstructionAnalytics() {
                             <div style={{ flex: 1, minWidth: 0 }}>
                                 <p style={{
                                     fontFamily: "'DM Sans', sans-serif",
-                                    fontSize: '14px',
+                                    fontSize: '13px',
                                     fontWeight: 500,
-                                    margin: '0 0 8px 0',
+                                    margin: '0 0 6px 0',
                                     color: '#d4f4d4',
                                     whiteSpace: 'nowrap',
                                     overflow: 'hidden',
@@ -699,9 +696,9 @@ export default function ConstructionAnalytics() {
                                 }}>{company.name}</p>
                                 {/* Stacked regional bar */}
                                 <div style={{
-                                    height: '8px',
+                                    height: '6px',
                                     background: 'rgba(61, 122, 61, 0.2)',
-                                    borderRadius: '4px',
+                                    borderRadius: '3px',
                                     overflow: 'hidden',
                                     display: 'flex'
                                 }}>
@@ -731,15 +728,15 @@ export default function ConstructionAnalytics() {
                             <div style={{ textAlign: 'right', flexShrink: 0 }}>
                                 <p style={{
                                     fontFamily: "'DM Mono', monospace",
-                                    fontSize: '16px',
+                                    fontSize: '14px',
                                     fontWeight: 600,
                                     margin: 0,
                                     color: '#d4f4d4'
                                 }}>{formatCurrencyShort(company.total)}</p>
                                 <p style={{
                                     fontFamily: "'DM Mono', monospace",
-                                    fontSize: '11px',
-                                    margin: '4px 0 0 0',
+                                    fontSize: '10px',
+                                    margin: '2px 0 0 0',
                                     color: '#4a8c4a'
                                 }}>{((company.total / 9193100.51) * 100).toFixed(1)}%</p>
                             </div>
@@ -750,30 +747,32 @@ export default function ConstructionAnalytics() {
 
             {/* Footer */}
             <footer style={{
-                marginTop: '48px',
-                paddingTop: '24px',
+                marginTop: '32px',
+                paddingTop: '20px',
                 borderTop: '1px solid rgba(61, 122, 61, 0.3)',
                 display: 'flex',
+                flexWrap: 'wrap',
                 justifyContent: 'space-between',
                 alignItems: 'center',
+                gap: '12px',
                 position: 'relative',
                 zIndex: 1
             }}>
                 <p style={{
                     fontFamily: "'DM Mono', monospace",
-                    fontSize: '12px',
+                    fontSize: '11px',
                     color: '#4a8c4a',
                     margin: 0
                 }}>
-                    Data Period: January — December 2025
+                    Data Period: Jan — Dec 2025
                 </p>
                 <p style={{
                     fontFamily: "'DM Mono', monospace",
-                    fontSize: '12px',
+                    fontSize: '11px',
                     color: '#4a8c4a',
                     margin: 0
                 }}>
-                    Total Transactions: 14,362 • 456 Active Clients • DMV Region
+                    14,362 Transactions • 456 Clients
                 </p>
             </footer>
         </div>
