@@ -191,7 +191,17 @@ export default function App() {
 
   const loadSample = (sample) => setInputText(sample.text);
 
+  const resetWordShift = useCallback(() => {
+    const wordEl = currentWordRef.current;
+    if (wordEl) wordEl.style.transform = 'translateX(0px)';
+  }, []);
+
   const updateOrpShift = useCallback(() => {
+    if (isPhoneMode || showInput) {
+      resetWordShift();
+      return;
+    }
+
     const container = wordDisplayRef.current;
     const wordEl = currentWordRef.current;
     if (!container) return;
@@ -199,7 +209,7 @@ export default function App() {
 
     const orpLetter = container.querySelector('.orp-letter');
     if (!orpLetter) {
-      wordEl.style.transform = 'translateX(0px)';
+      resetWordShift();
       return;
     }
 
@@ -210,11 +220,11 @@ export default function App() {
     const delta = containerCenter - letterCenter;
     const next = Number.isFinite(delta) ? delta : 0;
     wordEl.style.transform = `translateX(${next}px)`;
-  }, []);
+  }, [isPhoneMode, showInput, resetWordShift]);
 
   useLayoutEffect(() => {
     updateOrpShift();
-  }, [currentWord, isPhoneMode, showInput, updateOrpShift]);
+  }, [currentWord, updateOrpShift]);
 
   useEffect(() => {
     const handleResize = () => updateOrpShift();
@@ -764,6 +774,8 @@ export default function App() {
 
         .phone-mode .word-container {
           padding: 24px 40px;
+          width: 100%;
+          max-width: 360px;
           min-width: 200px;
           min-height: 80px;
         }
