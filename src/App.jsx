@@ -88,6 +88,7 @@ export default function App() {
   const timerRef = useRef(null);
   const wordDisplayRef = useRef(null);
   const currentWordRef = useRef(null);
+  const wordShiftRef = useRef(0);
   const [isActuallyMobile, setIsActuallyMobile] = useState(false);
 
   useEffect(() => {
@@ -193,11 +194,12 @@ export default function App() {
 
   const resetWordShift = useCallback(() => {
     const wordEl = currentWordRef.current;
+    wordShiftRef.current = 0;
     if (wordEl) wordEl.style.transform = 'translateX(0px)';
   }, []);
 
   const updateOrpShift = useCallback(() => {
-    if (isPhoneMode || showInput) {
+    if (showInput) {
       resetWordShift();
       return;
     }
@@ -218,8 +220,11 @@ export default function App() {
     const containerCenter = containerRect.left + containerRect.width / 2;
     const letterCenter = letterRect.left + letterRect.width / 2;
     const delta = containerCenter - letterCenter;
-    const next = Number.isFinite(delta) ? delta : 0;
-    wordEl.style.transform = `translateX(${next}px)`;
+    const next = wordShiftRef.current + delta;
+    const resolved = Number.isFinite(next) ? next : 0;
+    const snapped = isPhoneMode ? Math.round(resolved) : resolved;
+    wordShiftRef.current = snapped;
+    wordEl.style.transform = `translateX(${snapped}px)`;
   }, [isPhoneMode, showInput, resetWordShift]);
 
   useLayoutEffect(() => {
