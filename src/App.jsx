@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useLayoutEffect } from 'react';
 
 // Sample texts for quick start
 const SAMPLE_TEXTS = [
@@ -86,6 +86,8 @@ export default function App() {
   });
 
   const timerRef = useRef(null);
+  const wordDisplayRef = useRef(null);
+  const currentWordRef = useRef(null);
   const [isActuallyMobile, setIsActuallyMobile] = useState(false);
 
   useEffect(() => {
@@ -189,6 +191,37 @@ export default function App() {
 
   const loadSample = (sample) => setInputText(sample.text);
 
+  const updateOrpShift = useCallback(() => {
+    const container = wordDisplayRef.current;
+    const wordEl = currentWordRef.current;
+    if (!container) return;
+    if (!wordEl) return;
+
+    const orpLetter = container.querySelector('.orp-letter');
+    if (!orpLetter) {
+      wordEl.style.transform = 'translateX(0px)';
+      return;
+    }
+
+    const containerRect = container.getBoundingClientRect();
+    const letterRect = orpLetter.getBoundingClientRect();
+    const containerCenter = containerRect.left + containerRect.width / 2;
+    const letterCenter = letterRect.left + letterRect.width / 2;
+    const delta = containerCenter - letterCenter;
+    const next = Number.isFinite(delta) ? delta : 0;
+    wordEl.style.transform = `translateX(${next}px)`;
+  }, []);
+
+  useLayoutEffect(() => {
+    updateOrpShift();
+  }, [currentWord, isPhoneMode, showInput, updateOrpShift]);
+
+  useEffect(() => {
+    const handleResize = () => updateOrpShift();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [updateOrpShift]);
+
   useEffect(() => {
     if (isPhoneMode) return;
 
@@ -289,9 +322,6 @@ export default function App() {
           background: var(--bg);
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
           color: var(--text);
-          display: flex;
-          flex-direction: column;
-          align-items: center;
         }
 
         /* ===== HEADER ===== */
@@ -400,18 +430,16 @@ export default function App() {
 
         /* ===== MAIN WRAPPER ===== */
         .main-wrapper {
-          width: 100%;
           max-width: 1200px;
+          margin: 0 auto;
           min-height: calc(100vh - 61px);
-          display: flex;
-          flex-direction: column;
-          align-items: center;
           padding: 0 24px;
         }
 
         .main-container {
-          width: 100%;
           max-width: 680px;
+          margin: 0 auto;
+          min-height: calc(100vh - 61px);
           display: flex;
           flex-direction: column;
         }
@@ -726,8 +754,12 @@ export default function App() {
 
         /* Desktop: Fixed size word container to prevent shifting */
         .desktop-mode .word-container {
-          width: 420px;
-          min-height: 120px;
+          width: 560px;
+          min-height: 140px;
+        }
+
+        .desktop-mode .current-word {
+          font-size: 3.5rem;
         }
 
         .phone-mode .word-container {
@@ -780,6 +812,10 @@ export default function App() {
           max-width: 420px;
         }
 
+        .desktop-mode .progress-container {
+          max-width: 560px;
+        }
+
         .progress-bar {
           width: 100%;
           height: 4px;
@@ -815,6 +851,10 @@ export default function App() {
           width: 100%;
           max-width: 420px;
           margin: 0 auto;
+        }
+
+        .desktop-mode .controls-inner {
+          max-width: 560px;
         }
 
         .phone-mode .controls-section {
@@ -1193,13 +1233,13 @@ export default function App() {
           ) : (
             <div className="reading-view">
               <div className="reading-area" onClick={togglePlayPause}>
-                <div className="word-display">
-                  <div className="orp-guide"></div>
-                  <div className="word-container">
-                    <div className="current-word">
-                      <WordWithORP word={currentWord} />
-                    </div>
+              <div className="word-display" ref={wordDisplayRef}>
+                <div className="orp-guide"></div>
+                <div className="word-container">
+                  <div className="current-word" ref={currentWordRef}>
+                    <WordWithORP word={currentWord} />
                   </div>
+                </div>
                 </div>
 
                 <div className="reading-stats">
