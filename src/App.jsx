@@ -112,6 +112,17 @@ export default function App() {
   const progress = words.length > 0 ? (currentIndex / (words.length - 1)) * 100 : 0;
   const wordCount = words.length;
 
+  // Calculate time in seconds
+  const totalTimeSeconds = wordCount > 0 ? Math.ceil((wordCount / wpm) * 60) : 0;
+  const elapsedTimeSeconds = wordCount > 0 ? Math.floor((currentIndex / wpm) * 60) : 0;
+
+  // Format time as M:SS or MM:SS
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
   const loadText = useCallback((text) => {
     const parsed = text.split(/\s+/).filter(word => word.trim().length > 0);
     setWords(parsed);
@@ -814,7 +825,7 @@ export default function App() {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 28px;
+          gap: 24px;
           margin-bottom: 20px;
         }
 
@@ -834,12 +845,20 @@ export default function App() {
           transform: scale(0.95);
         }
 
+        .control-btn svg {
+          display: block;
+        }
+
         .skip-btn {
-          font-size: 1.125rem;
-          width: 48px;
-          height: 48px;
+          width: 52px;
+          height: 52px;
           background: var(--surface-alt);
           border-radius: 50%;
+          color: var(--accent);
+        }
+
+        .skip-btn:hover {
+          background: var(--border);
         }
 
         .play-btn {
@@ -848,12 +867,22 @@ export default function App() {
           background: var(--accent);
           border-radius: 50%;
           color: white;
-          font-size: 1.375rem;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .phone-mode .skip-btn {
+          width: 56px;
+          height: 56px;
         }
 
         .phone-mode .play-btn {
           width: 80px;
           height: 80px;
+        }
+
+        .phone-mode .play-btn svg {
+          width: 32px;
+          height: 32px;
         }
 
         .play-btn:hover {
@@ -1191,8 +1220,8 @@ export default function App() {
                     />
                   </div>
                   <div className="progress-text">
+                    <span>{formatTime(elapsedTimeSeconds)} / {formatTime(totalTimeSeconds)}</span>
                     <span>{Math.round(progress)}%</span>
-                    <span>{Math.ceil((wordCount - currentIndex) / wpm * 60)}s left</span>
                   </div>
                 </div>
               </div>
@@ -1203,20 +1232,35 @@ export default function App() {
                     <button
                       className="control-btn skip-btn"
                       onClick={(e) => { e.stopPropagation(); skipBackward(); }}
+                      aria-label="Skip backward"
                     >
-                      ⏮
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6 6h2v12H6V6zm3.5 6l8.5 6V6l-8.5 6z"/>
+                      </svg>
                     </button>
                     <button
                       className="control-btn play-btn"
                       onClick={(e) => { e.stopPropagation(); togglePlayPause(); }}
+                      aria-label={isPlaying ? 'Pause' : 'Play'}
                     >
-                      {isPlaying ? '⏸' : '▶'}
+                      {isPlaying ? (
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                        </svg>
+                      ) : (
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M8 5v14l11-7z"/>
+                        </svg>
+                      )}
                     </button>
                     <button
                       className="control-btn skip-btn"
                       onClick={(e) => { e.stopPropagation(); skipForward(); }}
+                      aria-label="Skip forward"
                     >
-                      ⏭
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6 18l8.5-6L6 6v12zM16 6h2v12h-2V6z"/>
+                      </svg>
                     </button>
                   </div>
 
