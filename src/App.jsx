@@ -77,6 +77,7 @@ export default function App() {
   const [wpm, setWpm] = useState(250);
   const [showInput, setShowInput] = useState(true);
   const [viewMode, setViewMode] = useState('auto');
+  const [readingMode, setReadingMode] = useState('focused');
   const [showORPInfo, setShowORPInfo] = useState(false);
   const [darkMode, setDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -89,6 +90,7 @@ export default function App() {
   const wordDisplayRef = useRef(null);
   const currentWordRef = useRef(null);
   const wordShiftRef = useRef(0);
+  const contextRef = useRef(null);
   const [isActuallyMobile, setIsActuallyMobile] = useState(false);
 
   useEffect(() => {
@@ -204,6 +206,16 @@ export default function App() {
       return;
     }
 
+    if (isPhoneMode) {
+      resetWordShift();
+      return;
+    }
+
+    if (readingMode !== 'focused') {
+      resetWordShift();
+      return;
+    }
+
     const container = wordDisplayRef.current;
     const wordEl = currentWordRef.current;
     if (!container) return;
@@ -222,14 +234,28 @@ export default function App() {
     const delta = containerCenter - letterCenter;
     const next = wordShiftRef.current + delta;
     const resolved = Number.isFinite(next) ? next : 0;
-    const snapped = isPhoneMode ? Math.round(resolved) : resolved;
-    wordShiftRef.current = snapped;
-    wordEl.style.transform = `translateX(${snapped}px)`;
-  }, [isPhoneMode, showInput, resetWordShift]);
+    wordShiftRef.current = resolved;
+    wordEl.style.transform = `translateX(${resolved}px)`;
+  }, [isPhoneMode, readingMode, showInput, resetWordShift]);
 
   useLayoutEffect(() => {
     updateOrpShift();
   }, [currentWord, updateOrpShift]);
+
+  useLayoutEffect(() => {
+    if (showInput || readingMode !== 'context') return;
+    const container = contextRef.current;
+    if (!container) return;
+    const activeEl = container.querySelector(`[data-index="${currentIndex}"]`);
+    if (!activeEl) return;
+    activeEl.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'auto' });
+  }, [currentIndex, readingMode, showInput, words.length]);
+
+  useEffect(() => {
+    if (showInput) return;
+    const container = contextRef.current;
+    if (container) container.scrollTop = 0;
+  }, [showInput, words.length]);
 
   useEffect(() => {
     const handleResize = () => updateOrpShift();
@@ -439,6 +465,33 @@ export default function App() {
         }
 
         .view-btn.active {
+          background: var(--surface);
+          color: var(--text);
+        }
+
+        .mode-toggle {
+          display: flex;
+          gap: 2px;
+          background: var(--border);
+          padding: 3px;
+          border-radius: 8px;
+        }
+
+        .mode-btn {
+          padding: 6px 10px;
+          font-size: 0.625rem;
+          font-weight: 600;
+          background: transparent;
+          color: var(--text-secondary);
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: all 0.2s;
+          text-transform: uppercase;
+          letter-spacing: 0.4px;
+        }
+
+        .mode-btn.active {
           background: var(--surface);
           color: var(--text);
         }
@@ -715,6 +768,59 @@ export default function App() {
 
         .phone-mode .reading-area {
           padding: 24px 16px;
+        }
+
+        .context-view {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+        }
+
+        .context-title {
+          font-size: 0.625rem;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          color: var(--text-secondary);
+        }
+
+        .context-window {
+          width: 100%;
+          max-width: 560px;
+          height: 180px;
+          overflow-y: auto;
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 12px;
+          padding: 16px;
+          line-height: 1.6;
+          touch-action: pan-y;
+        }
+
+        .phone-mode .context-window {
+          max-width: 360px;
+          height: 140px;
+          padding: 12px;
+        }
+
+        .context-text {
+          font-size: 0.875rem;
+          color: var(--text-secondary);
+          word-break: break-word;
+        }
+
+        .context-word {
+          color: var(--text-secondary);
+        }
+
+        .context-word.active {
+          color: var(--text);
+          background: var(--accent-bg);
+          border-radius: 4px;
+          padding: 1px 2px;
+          font-weight: 600;
         }
 
         /* ORP Styling */
@@ -1102,6 +1208,11 @@ export default function App() {
           .main-wrapper {
             padding: 0 16px;
           }
+
+          .mode-btn {
+            padding: 6px 8px;
+            font-size: 0.5625rem;
+          }
         }
 
         @media (min-width: 900px) {
@@ -1141,6 +1252,18 @@ export default function App() {
                   onClick={() => setViewMode(mode)}
                 >
                   {mode}
+                </button>
+              ))}
+            </div>
+
+            <div className="mode-toggle">
+              {['focused', 'context'].map(mode => (
+                <button
+                  key={mode}
+                  className={`mode-btn ${readingMode === mode ? 'active' : ''}`}
+                  onClick={() => setReadingMode(mode)}
+                >
+                  {mode === 'focused' ? 'Focused' : 'Context'}
                 </button>
               ))}
             </div>
@@ -1250,14 +1373,38 @@ export default function App() {
           ) : (
             <div className="reading-view">
               <div className="reading-area" onClick={togglePlayPause}>
-              <div className="word-display" ref={wordDisplayRef}>
-                <div className="orp-guide"></div>
-                <div className="word-container">
-                  <div className="current-word" ref={currentWordRef}>
-                    <WordWithORP word={currentWord} />
+                {readingMode === 'focused' ? (
+                  <div className="word-display" ref={wordDisplayRef}>
+                    <div className="orp-guide"></div>
+                    <div className="word-container">
+                      <div className="current-word" ref={currentWordRef}>
+                        <WordWithORP word={currentWord} />
+                      </div>
+                    </div>
                   </div>
-                </div>
-                </div>
+                ) : (
+                  <div className="context-view">
+                    <div className="context-title">Context view</div>
+                    <div
+                      className="context-window"
+                      ref={contextRef}
+                      onClick={(e) => e.stopPropagation()}
+                      onPointerDown={(e) => e.stopPropagation()}
+                    >
+                      <p className="context-text">
+                        {words.map((word, index) => (
+                          <span
+                            key={`${word}-${index}`}
+                            data-index={index}
+                            className={`context-word ${index === currentIndex ? 'active' : ''}`}
+                          >
+                            {word}{index < words.length - 1 ? ' ' : ''}
+                          </span>
+                        ))}
+                      </p>
+                    </div>
+                  </div>
+                )}
 
                 <div className="reading-stats">
                   <span>{currentIndex + 1} / {wordCount}</span>
